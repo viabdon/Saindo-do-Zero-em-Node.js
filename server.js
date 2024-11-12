@@ -1,44 +1,59 @@
 import { fastify } from 'fastify';
 import { DatabaseMemory } from './database-memory.js';
 
-// MÉTODOS HTTP
+// MÉTODOS HTTP BÁSICOS
 // GET -> Busca uma informação
 // POST -> Cria um registro
 // PUT -> Edição/Alteração de tudo
 // DELETE -> Deleta
 // PATCH -> Edita parcialmente
 
-// Route Parameter
-// /videos/:id -> torna necessário um id para acessar o método
-
 const server = fastify();
 
 const database = new DatabaseMemory();
 
+// Request Body
+
 server.post('/videos', (request, reply) => {
+	const { title, description, duration } = request.body;
+
 	database.create({
-		title: 'Video 01',
-		description: 'Esse é o vídeo 01', 
-		duration: 180,
+		title: title,
+		description: description,
+		duration: duration,
 	});
 
-	console.log(database.list());
-
-    return reply.status(201).send();
-    // Retorna um sucesso de que  algo foi CRIADO
+	return reply.status(201).send();
+	// Retorna um sucesso de que  algo foi CRIADO
 });
 
 server.get('/videos', () => {
-	return 'Olá!';
+	const videos = database.list();
+
+	return videos;
 });
 
-server.put('/videos/:id', () => {
-	return 'Hello Node.js!';
+// Route Parameter
+// /videos/:id -> torna necessário um id para acessar o método
+server.put('/videos/:id', (request, reply) => {
+	const { title, description, duration } = request.body;
+	const videoId = request.params.id;
+
+	database.update(videoId, {
+		title: title,
+		description: description,
+		duration: duration,
+	});
+
+	return reply.status(204).send();
 });
 
-server.delete('/videos/:id', () => {
-	return 'Hello Node.js!';
-}); 
+server.delete('/videos/:id', (request, reply) => {
+	const videoId = request.params.id;
+	database.delete(videoId);
+
+	return reply.status(204).send();
+});
 
 server.listen({
 	port: 3333,

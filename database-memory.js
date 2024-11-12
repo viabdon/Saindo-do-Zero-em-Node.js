@@ -4,15 +4,22 @@ import { randomUUID } from 'node:crypto';
 export class DatabaseMemory {
 	//#videos = [];
 
-	#videos = new Map();
+	#videos = new Map(); 
 
 	// Set -> Não aceita valores duplicados
 	// Map -> Funciona como um objeto
 
+	list() {
+		return Array.from(this.#videos.entries()).map((videoArr) => {
+			const id = videoArr[0];
+			const data = videoArr[1];
 
-    list() {
-        return this.#videos.values();
-    }
+			return {
+				id,
+				...data,
+			};
+		});
+	}
 
 	create(video) {
 		// UUID = Universal Unique ID -> Garante que os IDs serão únicos
