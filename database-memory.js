@@ -11,7 +11,7 @@ export class DatabaseMemory {
 
 
     list() {
-        this.#videos.values();
+        return this.#videos.values();
     }
 
 	create(video) {

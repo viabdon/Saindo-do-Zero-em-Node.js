@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "fastify": "^5.1.0"
+    "fastify": "^5.1.0",
+    "saindo-do-zero-em-node": "file:"
   }
 }
