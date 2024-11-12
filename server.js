@@ -27,11 +27,15 @@ server.post('/videos', (request, reply) => {
 	// Retorna um sucesso de que  algo foi CRIADO
 });
 
-server.get('/videos', () => {
-	const videos = database.list();
+server.get('/videos', (request) => {
+	const search = request.query.search
+	
+	const videos = database.list(search);
 
 	return videos;
 });
+
+
 
 // Route Parameter
 // /videos/:id -> torna necessário um id para acessar o método

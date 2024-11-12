@@ -4,21 +4,29 @@ import { randomUUID } from 'node:crypto';
 export class DatabaseMemory {
 	//#videos = [];
 
-	#videos = new Map(); 
+	#videos = new Map();
 
 	// Set -> Não aceita valores duplicados
 	// Map -> Funciona como um objeto
 
-	list() {
-		return Array.from(this.#videos.entries()).map((videoArr) => {
-			const id = videoArr[0];
-			const data = videoArr[1];
+	list(search) {
+		return Array.from(this.#videos.entries())
+			.map((videoArr) => {
+				const id = videoArr[0];
+				const data = videoArr[1];
 
-			return {
-				id,
-				...data,
-			};
-		});
+				return {
+					id,
+					...data,
+				};
+			})
+			.filter((video) => {
+				if (search) {
+					return video.title.includes(search);
+				}
+
+				return true;
+			});
 	}
 
 	create(video) {
